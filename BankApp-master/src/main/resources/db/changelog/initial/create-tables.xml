@@ -1,0 +1,149 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="060220241930" author="JW">
+
+        <comment>Add table manager</comment>
+        <createTable tableName="managers">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="manager_pkey"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="status" type="INTEGER"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="060220241931" author="JW">
+        <comment>Add table clients</comment>
+        <createTable tableName="clients">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="client_pkey"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="tax_code" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="manager_id" type="BIGINT">
+                <constraints foreignKeyName="manager_fkey" referencedTableName="managers"
+                             referencedColumnNames="id" nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="060220241932" author="JW">
+
+        <comment>Add table account</comment>
+        <createTable tableName="accounts">
+            <column name="iban" autoIncrement="false" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="account_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="currency_code" type="VARCHAR(3)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="balance" type="DECIMAL(15,2)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="client_id" type="BIGINT">
+                <constraints foreignKeyName="client_fkey" referencedTableName="clients"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="060220241933" author="JW">
+
+        <comment>Add table products</comment>
+        <createTable tableName="products">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="product_pkey"/>
+            </column>
+            <column name="manager_id" type="BIGINT">
+                <constraints foreignKeyName="manager_foreign_key" referencedTableName="managers"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="currency_code" type="VARCHAR(255)"/>
+            <column name="interest_rate" type="DOUBLE"/>
+            <column name="product_limit" type="INTEGER"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="060220241934" author="JW">
+        <comment>Add table agreement</comment>
+        <createTable tableName="agreements">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="agreement_pkey"/>
+            </column>
+            <column name="status" type="INTEGER"/>
+            <column name="interest_rate" type="DOUBLE"/>
+            <column name="sum" type="DOUBLE"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="account_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="account_fkey" referencedTableName="accounts"
+                             referencedColumnNames="iban" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints foreignKeyName="product_fkey" referencedTableName="products"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="060220241935" author="JW">
+
+        <comment>Add table transactions</comment>
+        <createTable tableName="transactions">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="transaction_pkey"/>
+            </column>
+            <column name="debit_account_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="debit_account_fkey" nullable="false"
+                             referencedColumnNames="iban" referencedTableName="accounts"/>
+            </column>
+            <column name="credit_account_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="credit_account_fkey" nullable="true"
+                             referencedColumnNames="iban" referencedTableName="accounts"/>
+            </column>
+            <column name="amount" type="DECIMAL(15,2)"/>
+            <column name="transaction_type" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="060220241936" author="JW">
+        <comment>Add table user_data</comment>
+        <createTable tableName="user_data">
+            <column name="login" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="user_data_pkey"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="user_role" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

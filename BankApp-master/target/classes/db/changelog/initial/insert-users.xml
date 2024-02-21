@@ -1,0 +1,30 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="060220241914" author="JW">
+        <insert tableName="user_data">
+            <column name="login" value="client1@mybanking.com"/>
+            <column name="password" value="$2a$10$PXGrnvFN08bAbEkPAlkdquUjjX89YyphRj52HcSIR3o.rviw4ptm."/>
+            <column name="user_role" value="CLIENT"/>
+        </insert>
+
+        <insert tableName="user_data">
+            <column name="login" value="client2@mybanking.com"/>
+            <column name="password" value="$2a$10$HhCA4LjMZL3PXi2y4tSPaONhnYarSq2nsfS4D2D/7KyH5SJuTnG.."/>
+            <column name="user_role" value="MANAGER"/>
+        </insert>
+
+        <insert tableName="user_data">
+            <column name="login" value="client3@mybanking.com"/>
+            <column name="password" value="$2a$10$cHQGoLRH3NPBoAgpvPcTxuzj2SZBX6WMJAgW.KJFXbHE700QTr1qS"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
